@@ -12,11 +12,11 @@ Simply define a page such as:
     class MyPage
       include WatirPageHelper
 
-      direct_url "http://www.google.com"
-      expected_element :text_field, :name => "q"
-      expected_title "Google"
-      text_field :search_box, :name => "q"
-      button :search, :name => "btnG"
+      direct_url 'http://www.google.com'
+      expected_element :text_field, :name => 'q'
+      expected_title 'Google'
+      text_field :search_box, :name => 'q'
+      button :search, :name => 'btnG'
 
       def initialize browser, visit = false
         @browser = browser
@@ -30,7 +30,7 @@ Simply define a page such as:
 
     browser = Watir::Browser.new :chrome
     page = MyPage.new browser, true
-    page.search_box = "Watirmelon" #This method is created by WatirPageHelper
+    page.search_box = 'Watirmelon' #This method is created by WatirPageHelper
     page.search #This method is created by WatirPageHelper also
     browser.close
 
@@ -47,7 +47,7 @@ Simply define a page such as:
 
 ## Credits
 
-I originally saw this idea from Jeff Morgan - so full credit goes to him: http://www.cheezyworld.com/
+Thanks to Jeff Morgan: http://www.cheezyworld.com/ and Mark Ryall http://mark.ryall.name/blog/
 
 ## Contributing to watir-page-helper
  

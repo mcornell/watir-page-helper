@@ -79,9 +79,7 @@ module WatirPageHelper
       define_method("#{name}=") do |value|
         self.send("#{name}_text_field").set value
       end
-      define_method("#{name}_text_field") do
-        block ? block.call(@browser) : @browser.text_field(identifier)
-      end
+      create_element_getter "#{name}_text_field", identifier, __method__, block
     end
 
     # Generates four select_list methods to:
@@ -111,9 +109,7 @@ module WatirPageHelper
       define_method("#{name}_selected?") do |value|
         self.send("#{name}_select_list").selected?(value)
       end
-      define_method("#{name}_select_list") do
-        block ? block.call(@browser) : @browser.select_list(identifier)
-      end
+      create_element_getter "#{name}_select_list", identifier, __method__, block
     end
 
     # Generates four checkbox methods to:
@@ -144,36 +140,39 @@ module WatirPageHelper
       define_method("#{name}?") do
         self.send("#{name}_checkbox").set?
       end
-      define_method("#{name}_checkbox") do
-        block ? block.call(@browser) : @browser.checkbox(identifier)
-      end
+      create_element_getter "#{name}_checkbox", identifier, __method__, block
     end
 
-    # Generates three radio button methods to:
-    # * select a radio button;
-    # * see whether a radio button is selected; and
-    # * return the radio button element.
+    # Generates three radio methods to:
+    # * select a radio;
+    # * see whether a radio is selected; and
+    # * return the radio element.
     #
-    # @param [Symbol] name The name of the radio button element (used to generate the methods)
+    # @param [Symbol] name The name of the radio element (used to generate the methods)
     # @param [optional, Hash] identifier A set of key, value pairs to identify the element
     # @param block
     # @return [Nil]
     #
     # @example Specify a radio button to generate methods
-    #   radio_button :medium, :value => "Medium"
+    #   radio :medium, :value => "Medium"
     #   page.select_medium
     #   page.medium_set?.should be_true
-    #   page.medium_radio_button.exist?.should be_true
-    def radio_button name, identifier=nil, &block
+    #   page.medium_radio.exist?.should be_true
+
+    def radio name, identifier=nil, &block
       define_method("select_#{name}") do
-        self.send("#{name}_radio_button").set
+        self.send("#{name}_radio").set
       end
       define_method("#{name}_set?") do
-        self.send("#{name}_radio_button").set?
+        self.send("#{name}_radio").set?
       end
-      define_method("#{name}_radio_button")  do
-        block ? block.call(@browser) : @browser.radio(identifier)
-      end
+      create_element_getter "#{name}_radio", identifier, __method__, block
+      create_element_getter "#{name}_radio_button", identifier, __method__, block
+    end
+
+    def radio_button name, identifier=nil, &block
+      warn 'radio_button is a deprecated method in the watir-page-helper gem, and will be removed in future versions.'
+      radio name, identifier, &block
     end
 
     # Generates two button methods to:
@@ -194,10 +193,8 @@ module WatirPageHelper
       define_method(name) do
         self.send("#{name}_button").click
       end
-      define_method("#{name}_button") do
-        block ? block.call(@browser) : @browser.button(identifier)
-      end
-    end
+      create_element_getter "#{name}_button", identifier, __method__, block
+     end
 
     # Generates two link methods to:
     # * click a link;
@@ -216,9 +213,7 @@ module WatirPageHelper
       define_method(name) do
         self.send("#{name}_link").click
       end
-      define_method("#{name}_link") do
-        block ? block.call(@browser) : @browser.link(identifier)
-      end
+      create_element_getter "#{name}_link", identifier, __method__, block
     end
 
     # Generates a table method to return a table element.
@@ -231,9 +226,7 @@ module WatirPageHelper
     #   table :test_table, :id => "myTable"
     #   page.test_table.rows.length.should == 1
     def table name, identifier=nil, &block
-      define_method(name) do
-        block ? block.call(@browser) : @browser.table(identifier)
-      end
+      create_element_getter "#{name}", identifier, __method__, block
     end
 
     # Generates two row methods to:
@@ -253,9 +246,7 @@ module WatirPageHelper
       define_method(name) do
         self.send("#{name}_row").text
       end
-      define_method("#{name}_row") do
-        block ? block.call(@browser) : @browser.tr(identifier)
-      end
+      create_element_getter "#{name}_row", identifier, 'tr', block
     end
 
     # Generates two row methods to:
@@ -275,9 +266,7 @@ module WatirPageHelper
       define_method(name) do
         self.send("#{name}_cell").text
       end
-      define_method("#{name}_cell") do
-        block ? block.call(@browser) : @browser.td(identifier)
-      end
+      create_element_getter "#{name}_cell", identifier, 'td', block
     end
 
     # Generates two div methods to:
@@ -297,9 +286,7 @@ module WatirPageHelper
       define_method(name) do
         self.send("#{name}_div").text
       end
-      define_method("#{name}_div") do
-        block ? block.call(@browser) : @browser.div(identifier)
-      end
+      create_element_getter "#{name}_div", identifier, __method__, block
     end
 
     # Generates two span methods to:
@@ -319,9 +306,7 @@ module WatirPageHelper
       define_method(name) do
         self.send("#{name}_span").text
       end
-      define_method("#{name}_span") do
-        block ? block.call(@browser) : @browser.span(identifier)
-      end
+      create_element_getter "#{name}_span", identifier, __method__, block
     end
 
     # Generates two paragraph methods to:
@@ -341,9 +326,7 @@ module WatirPageHelper
       define_method(name) do
         self.send("#{name}_p").text
       end
-      define_method("#{name}_p") do
-        block ? block.call(@browser) : @browser.p(identifier)
-      end
+      create_element_getter "#{name}_p", identifier, __method__, block
     end
 
     # Generates two dd methods to:
@@ -363,9 +346,7 @@ module WatirPageHelper
       define_method(name) do
         self.send("#{name}_dd").text
       end
-      define_method("#{name}_dd") do
-        block ? block.call(@browser) : @browser.dd(identifier)
-      end
+      create_element_getter "#{name}_dd", identifier, __method__, block
     end
 
     # Generates two dl methods to:
@@ -385,9 +366,7 @@ module WatirPageHelper
       define_method(name) do
         self.send("#{name}_dl").text
       end
-      define_method("#{name}_dl") do
-        block ? block.call(@browser) : @browser.dl(identifier)
-      end
+      create_element_getter "#{name}_dl", identifier, __method__, block
     end
 
     # Generates two dt methods to:
@@ -407,9 +386,7 @@ module WatirPageHelper
       define_method(name) do
         self.send("#{name}_dt").text
       end
-      define_method("#{name}_dt") do
-        block ? block.call(@browser) : @browser.dt(identifier)
-      end
+      create_element_getter "#{name}_dt", identifier, __method__, block
     end
 
     # Generates two form methods to:
@@ -429,9 +406,7 @@ module WatirPageHelper
       define_method(name) do
         self.send("#{name}_form").text
       end
-      define_method("#{name}_form") do
-        block ? block.call(@browser) : @browser.form(identifier)
-      end
+      create_element_getter "#{name}_form", identifier, __method__, block
     end
 
     # Generates a method to return an image element
@@ -445,9 +420,7 @@ module WatirPageHelper
     #  image :succulent, :id => "mySucculentImage"
     #  page.succulent.exist?.should be_true
     def image name, identifier=nil, &block
-      define_method(name) do
-        block ? block.call(@browser) : @browser.image(identifier)
-      end
+      create_element_getter "#{name}", identifier, __method__, block
     end
 
     # Generates two li methods to:
@@ -467,9 +440,7 @@ module WatirPageHelper
       define_method name do
         self.send("#{name}_li").text
       end
-      define_method "#{name}_li" do
-        block ? block.call(@browser) : @browser.li(identifier)
-      end
+      create_element_getter "#{name}_li", identifier, __method__, block
     end
 
     # Generates two h1 methods to:
@@ -489,9 +460,7 @@ module WatirPageHelper
       define_method(name) do
         self.send("#{name}_h1").text
       end
-      define_method("#{name}_h1") do
-        block ? block.call(@browser) : @browser.h1(identifier)
-      end
+      create_element_getter "#{name}_h1", identifier, __method__, block
     end
 
     # Generates two h2 methods to:
@@ -511,9 +480,7 @@ module WatirPageHelper
       define_method(name) do
         self.send("#{name}_h2").text
       end
-      define_method("#{name}_h2") do
-        block ? block.call(@browser) : @browser.h2(identifier)
-      end
+      create_element_getter "#{name}_h2", identifier, __method__, block
     end
 
     # Generates two h3 methods to:
@@ -533,9 +500,7 @@ module WatirPageHelper
       define_method(name) do
         self.send("#{name}_h3").text
       end
-      define_method("#{name}_h3") do
-        block ? block.call(@browser) : @browser.h3(identifier)
-      end
+      create_element_getter "#{name}_h3", identifier, __method__, block
     end
 
     # Generates two h4 methods to:
@@ -555,9 +520,7 @@ module WatirPageHelper
       define_method(name) do
         self.send("#{name}_h4").text
       end
-      define_method("#{name}_h4") do
-        block ? block.call(@browser) : @browser.h4(identifier)
-      end
+      create_element_getter "#{name}_h4", identifier, __method__, block
     end
 
     # Generates two h5 methods to:
@@ -577,9 +540,7 @@ module WatirPageHelper
       define_method(name) do
         self.send("#{name}_h5").text
       end
-      define_method("#{name}_h5") do
-        block ? block.call(@browser) : @browser.h5(identifier)
-      end
+      create_element_getter "#{name}_h5", identifier, __method__, block
     end
 
     # Generates two h6 methods to:
@@ -599,9 +560,20 @@ module WatirPageHelper
       define_method(name) do
          self.send("#{name}_h6").text
       end
-      define_method("#{name}_h6") do
-        block ? block.call(@browser) : @browser.h6(identifier)
+      create_element_getter "#{name}_h6", identifier, __method__, block
+    end
+
+    private
+
+    def create_element_getter name, identifier, type, block
+      define_method name do
+        if block
+           block.arity == 1 ? block.call(self) : block.call
+        else
+          identifier.nil? ? @browser.send(type) : @browser.send(type, identifier)
+        end
       end
     end
+
   end
 end
