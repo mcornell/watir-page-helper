@@ -110,7 +110,7 @@ describe "Watir Page Helper" do
 
   it "should support adding two methods for divs" do
     page = PageDiv.new @browser, true
-    page.information.should == "This is a header\n\nThis is a paragraph."
+    page.information.should == "This is a header\nThis is a paragraph."
     page.information_div.exist?.should be_true
   end
 
@@ -128,7 +128,7 @@ describe "Watir Page Helper" do
 
   it "should support adding two methods each for dl, dt, dd" do
     page = PageDlDtDd.new @browser, true
-    page.definition_list.should == "Succulents\n\n- water-retaining plants adapted to arid climates or soil conditions.\n\nCactus\n\n- plants who distinctive appearance is a result of adaptations to conserve water in dry and/or hot environments."
+    page.definition_list.should == "Succulents\n- water-retaining plants adapted to arid climates or soil conditions.\nCactus\n- plants who distinctive appearance is a result of adaptations to conserve water in dry and/or hot environments."
     page.definition_list_dl.exist?.should be_true
     page.definition_type.should == "Succulents"
     page.definition_type_dt.exist?.should be_true
@@ -138,7 +138,7 @@ describe "Watir Page Helper" do
 
   it "should support adding two methods for a form" do
     page = PageForm.new @browser, true
-    page.main_form.should == "First name:\nLast name:\nCar model:\nHonda\n\nMazda\n\nToyota\n\nDo you agree?: I agree\nHigh\nMedium\nLow"
+    page.main_form.should == "First name:\nLast name:\nCar model:\nHonda\nMazda\nToyota\n\nDo you agree?: I agree\nHigh\nMedium\nLow"
     page.main_form_form.exist?.should be_true
   end
 
@@ -167,5 +167,13 @@ describe "Watir Page Helper" do
     page.heading_four_h4.exist?.should be_true
     page.heading_five_h5.exist?.should be_true
     page.heading_six_h6.exist?.should be_true
+  end
+
+
+  it "should support finding items using a parent other than @browser" do
+    page = PageNesting.new @browser, true
+    page.outside_paragraph.should == "Outside"
+    page.nested_paragraph.should == "This is a paragraph."
+    page.nested_paragraph_2.should == "This is a paragraph."
   end
 end

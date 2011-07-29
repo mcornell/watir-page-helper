@@ -129,3 +129,12 @@ class PageHeadings < BasePageClass
   h5 :heading_five, :id => "myh5"
   h6 :heading_six, :id => "myh6"
 end
+
+class PageNesting < BasePageClass
+  direct_url TEST_URL
+  div :new_parent, :id => "testingNesting"
+  div :even_more_inner_parent, :id => "myDiv"
+  p :outside_paragraph, :index => 0
+  p :nested_paragraph, :index => 0, :parent => :new_parent_div
+  p :nested_paragraph_2, :index => 0, :parent => :even_more_inner_parent_div
+end
