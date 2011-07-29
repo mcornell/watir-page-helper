@@ -63,7 +63,7 @@ end
 
 class PageRadioButton < BasePageClass
   direct_url TEST_URL
-  radio_button :medium, :value => "Medium"
+  radio :medium, :value => "Medium"
 end
 
 class PageButton < BasePageClass
@@ -79,13 +79,27 @@ end
 class PageTable < BasePageClass
   direct_url TEST_URL
   table :test_table, :id => "myTable"
-  row(:test_table_row_1) { | test_table |  test_table.tr }
-  cell(:test_table_row_1_cell_1) { |test_table_row_1 | test_table_row_1.td }
+  row :test_table_row_1
+  cell :test_table_row_1_cell_1
+end
+
+class PageNestedTable < BasePageClass
+  direct_url TEST_URL
+  table :test_table, :id => "mySecondTable"
+  row(:test_table_row_1) { |page| page.test_table.tr }
+  cell(:test_table_row_1_cell_1) { |page| page.test_table_row_1_row.td }
 end
 
 class PageDiv < BasePageClass
   direct_url TEST_URL
   div :information, :id => "myDiv"
+end
+
+class PageNestedDiv < BasePageClass
+  direct_url TEST_URL
+  div :my_nice_div, :id => 'myNiceDiv'
+  div(:my_unnamed_div) { |page| page.my_nice_div_div.div }
+  span(:my_unnamed_span) { |page| page.my_nice_div_div.span }
 end
 
 class PageSpan < BasePageClass

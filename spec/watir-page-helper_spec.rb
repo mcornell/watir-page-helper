@@ -2,8 +2,22 @@ require 'helper'
 require 'pages'
 
 describe "Watir Page Helper" do
-  before(:all) { @browser = Watir::Browser.new :firefox }
+  before(:all) { @browser = Watir::Browser.new :firefox  }
   after(:all) { @browser.close }
+
+  it 'should support nesting of table elements' do
+    page = PageNestedTable.new @browser, true
+    page.test_table.rows.length.should == 1
+    page.test_table_row_1.should == "Test Table 2 Col 1 Test Table 2 Col 2"
+    page.test_table_row_1_cell_1.should == "Test Table 2 Col 1"
+  end
+
+  it 'should support nesting of div and span elements' do
+    page = PageNestedDiv.new @browser, true
+    page.my_nice_div.should == "This div is unnamed and inside myNiceDiv.\nThis span is unnamed and inside myNiceDiv."
+    page.my_unnamed_div.should == 'This div is unnamed and inside myNiceDiv.'
+    page.my_unnamed_span.should == 'This span is unnamed and inside myNiceDiv.'
+  end
 
   it "should raise an error when the expected literal title doesn't match actual title" do
     lambda { PageIncorrectTitle.new @browser, true }.should raise_error("Expected title 'not expected' instead of 'HTML Document Title'")
