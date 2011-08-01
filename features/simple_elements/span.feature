@@ -1,4 +1,4 @@
-Feature: span element location
+Feature: span
   As a web developer
   I want to locate span elements
   So that I can write tests that make assertions about their content

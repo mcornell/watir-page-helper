@@ -1,4 +1,4 @@
-Feature: h2 element location
+Feature: h2
   As a web developer
   I want to locate h2 elements
   So that I can write tests that make assertions about their content

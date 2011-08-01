@@ -3,7 +3,7 @@
 require 'erb'
 
 feature_template = ERB.new <<EOF, 0, "%<>"
-Feature: <%= element %> element location
+Feature: <%= element %>
   As a web developer
   I want to locate <%= element %> elements
   So that I can write tests that make assertions about their content
@@ -46,7 +46,7 @@ EOF
 
 simple_elements = []
 simple_elements += (1..6).map{|i| "h#{i}"}
-simple_elements += %w{span quote}
+simple_elements += %w{span}
 # simple_elements += %w{i strong}
 
 File.open 'features/support/test.html', 'w' do |f|

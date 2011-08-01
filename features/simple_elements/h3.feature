@@ -1,4 +1,4 @@
-Feature: h3 element location
+Feature: h3
   As a web developer
   I want to locate h3 elements
   So that I can write tests that make assertions about their content

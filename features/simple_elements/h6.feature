@@ -1,4 +1,4 @@
-Feature: h6 element location
+Feature: h6
   As a web developer
   I want to locate h6 elements
   So that I can write tests that make assertions about their content
