@@ -8,7 +8,7 @@ Feature: h1
     """
     class PageWithH1 < BasePageClass
       include WatirPageHelper
-      h1 :element
+      h1 :element, :id => 'h1_identifier'
     end
     """
 
@@ -23,5 +23,5 @@ Feature: h1
     Then I should be able to execute the following assertion:
     """
     page = PageWithH1.new true
-    page.element.should == 'h1 content'
+    page.element.should == 'h1 expected content'
     """

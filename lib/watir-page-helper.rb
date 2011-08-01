@@ -72,15 +72,15 @@ module WatirPageHelper
     #   page.first_name = "Finley" #set
     #   page.first_name.should == "Finley" #check
     #   page.first_name_text_field.exists?.should be_true #object
-    def text_field name, identifier=nil, &block
-      define_method(name) do
-        self.send("#{name}_text_field").value
-      end
-      define_method("#{name}=") do |value|
-        self.send("#{name}_text_field").set value
-      end
-      create_element_getter "#{name}_text_field", identifier, __method__, block
-    end
+    #def text_field name, identifier=nil, &block
+    #  define_method(name) do
+    #    self.send("#{name}_text_field").value
+    #  end
+    #  define_method("#{name}=") do |value|
+    #    self.send("#{name}_text_field").set value
+    #  end
+    #  create_element_getter "#{name}_text_field", identifier, __method__, block
+    #end
 
     # Generates four select_list methods to:
     # * get the value specified in a select_list
@@ -175,46 +175,7 @@ module WatirPageHelper
       radio name, identifier, &block
     end
 
-    # Generates two button methods to:
-    # * click a button;
-    # * return the button element.
-    #
-    # @param [Symbol] name The name of the button element (used to generate the methods)
-    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
-    # @param block
-    # @return [Nil]
-    #
-    # @example Specify a button to generate methods
-    #   button :submit, :value => "Submit"
-    #   page = PageButton.new @browser, true
-    #   page.submit
-    #   page.submit_button.enabled?.should be_true
-    def button name, identifier=nil, &block
-      define_method(name) do
-        self.send("#{name}_button").click
-      end
-      create_element_getter "#{name}_button", identifier, __method__, block
-     end
 
-    # Generates two link methods to:
-    # * click a link;
-    # * return the link element.
-    #
-    # @param [Symbol] name The name of the link element (used to generate the methods)
-    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
-    # @param block
-    # @return [Nil]
-    #
-    # @example Specify a link to generate methods
-    #   link :info, :text => "Information Link"
-    #   page.info
-    #   page.info_link.exist?.should be_true
-    def link name, identifier=nil, &block
-      define_method(name) do
-        self.send("#{name}_link").click
-      end
-      create_element_getter "#{name}_link", identifier, __method__, block
-    end
 
     # Generates a table method to return a table element.
     # @param [Symbol] name The name of the table element (used to generate the method)
@@ -269,146 +230,6 @@ module WatirPageHelper
       create_element_getter "#{name}_cell", identifier, 'td', block
     end
 
-    # Generates two div methods to:
-    # * return the text from a div;
-    # * return the div element.
-    #
-    # @param [Symbol] name The name of the div element (used to generate the methods)
-    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
-    # @param block
-    # @return [Nil]
-    #
-    # @example Specify a div to generate methods
-    #  div :information, :id => "myDiv"
-    #  page.information.should == "This is a header\n\nThis is a paragraph."
-    #  page.information_div.exist?.should be_true
-    def div name, identifier=nil, &block
-      define_method(name) do
-        self.send("#{name}_div").text
-      end
-      create_element_getter "#{name}_div", identifier, __method__, block
-    end
-
-    # Generates two span methods to:
-    # * return the text from a span;
-    # * return the span element.
-    #
-    # @param [Symbol] name The name of the span element (used to generate the methods)
-    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
-    # @param block
-    # @return [Nil]
-    #
-    # @example Specify a span to generate methods
-    #  span :information, :id => "mySpan"
-    #  page.information.should == "This is a header\n\nThis is a paragraph."
-    #  page.information_span.exist?.should be_true
-    def span name, identifier=nil, &block
-      define_method(name) do
-        self.send("#{name}_span").text
-      end
-      create_element_getter "#{name}_span", identifier, __method__, block
-    end
-
-    # Generates two paragraph methods to:
-    # * return the text from a p;
-    # * return the p element.
-    #
-    # @param [Symbol] name The name of the p element (used to generate the methods)
-    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
-    # @param block
-    # @return [Nil]
-    #
-    # @example Specify a paragraph to generate methods
-    #  p :paragraph, :id => "myP"
-    #  page.paragraph.should == "This is a paragraph."
-    #  page.paragraph_p.exist?.should be_true
-    def p name, identifier=nil, &block
-      define_method(name) do
-        self.send("#{name}_p").text
-      end
-      create_element_getter "#{name}_p", identifier, __method__, block
-    end
-
-    # Generates two dd methods to:
-    # * return the text from a dd;
-    # * return the dd element.
-    #
-    # @param [Symbol] name The name of the dd element (used to generate the methods)
-    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
-    # @param block
-    # @return [Nil]
-    #
-    # @example Specify a dd to generate methods
-    #  dd :definition_data, :id => "myDD"
-    #  page.definition_data.should == "This is a dd"
-    #  page.definition_data_dd.exist?.should be_true
-    def dd name, identifier=nil, &block
-      define_method(name) do
-        self.send("#{name}_dd").text
-      end
-      create_element_getter "#{name}_dd", identifier, __method__, block
-    end
-
-    # Generates two dl methods to:
-    # * return the text from a dl;
-    # * return the dl element.
-    #
-    # @param [Symbol] name The name of the dl element (used to generate the methods)
-    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
-    # @param block
-    # @return [Nil]
-    #
-    # @example Specify a dl to generate methods
-    #  dl :definition_list, :id => "myDL"
-    #  page.definition_list.should == "This is a dl"
-    #  page.definition_list_dl.exist?.should be_true
-    def dl name, identifier=nil, &block
-      define_method(name) do
-        self.send("#{name}_dl").text
-      end
-      create_element_getter "#{name}_dl", identifier, __method__, block
-    end
-
-    # Generates two dt methods to:
-    # * return the text from a dt;
-    # * return the dt element.
-    #
-    # @param [Symbol] name The name of the dt element (used to generate the methods)
-    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
-    # @param block
-    # @return [Nil]
-    #
-    # @example Specify a dt to generate methods
-    #  dt :definition_type, :id => "myDT"
-    #  page.definition_type.should == "This is a dt"
-    #  page.definition_type_dt.exist?.should be_true
-    def dt name, identifier=nil, &block
-      define_method(name) do
-        self.send("#{name}_dt").text
-      end
-      create_element_getter "#{name}_dt", identifier, __method__, block
-    end
-
-    # Generates two form methods to:
-    # * return the text from a form;
-    # * return the form element.
-    #
-    # @param [Symbol] name The name of the form element (used to generate the methods)
-    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
-    # @param block
-    # @return [Nil]
-    #
-    # @example Specify a form to generate methods
-    #  form :details, :id => "myForm"
-    #  page.details.should == "My Form Text"
-    #  page.details_form.exist?.should be_true
-    def form name, identifier=nil, &block
-      define_method(name) do
-        self.send("#{name}_form").text
-      end
-      create_element_getter "#{name}_form", identifier, __method__, block
-    end
-
     # Generates a method to return an image element
     #
     # @param [Symbol] name The name of the image element (used to generate the methods)
@@ -423,27 +244,26 @@ module WatirPageHelper
       create_element_getter "#{name}", identifier, __method__, block
     end
 
-    # Generates two li methods to:
-    # * return the text from a li;
-    # * return the li element.
-    #
-    # @param [Symbol] name The name of the li element (used to generate the methods)
-    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
-    # @param block
-    # @return [Nil]
-    #
-    # @example Specify a li to generate methods
-    #  li :item, :id => "myLi"
-    #  page.item.should == "My List Item Text"
-    #  page.item_li.exist?.should be_true
-    def li name, identifier=nil, &block
-      define_method name do
-        self.send("#{name}_li").text
+    #Setty Elements
+    [:text_field].each do |type|
+      define_method type do |name, identifier=nil, &block|
+        create_element_getter "#{name}_#{type}", identifier, type, block
+        create_element_value_getter name, type
+        create_element_value_setter "#{name}=", name, type
       end
-      create_element_getter "#{name}_li", identifier, __method__, block
     end
 
-    (1..6).map{|i| "h#{i}"}.each do |type|
+
+    #Clicky Elements
+    ['link', 'button'].each do |type|
+      define_method type do |name, identifier=nil, &block|
+        create_element_getter "#{name}_#{type}", identifier, type, block
+        create_element_clicker name, type
+      end
+    end
+
+    # Simple Elements
+    ['div', 'span', 'p', 'dl', 'dd', 'dt', 'form', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].each do |type|
       define_method type do |name, identifier=nil, &block|
         create_element_getter "#{name}_#{type}", identifier, type, block
         create_element_text_getter name, type
@@ -452,9 +272,28 @@ module WatirPageHelper
 
     private
 
+    def create_element_clicker name, type
+      define_method(name) do
+        self.send("#{name}_#{type}").click
+      end
+    end
+
+
     def create_element_text_getter name, type
       define_method(name) do
         self.send("#{name}_#{type}").text
+      end
+    end
+
+    def create_element_value_getter name, type
+      define_method(name) do
+        self.send("#{name}_#{type}").value
+      end
+    end
+
+    def create_element_value_setter method_name, name, type
+      define_method(method_name) do |value|
+        self.send("#{name}_#{type}").set value
       end
     end
 

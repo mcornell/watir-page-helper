@@ -8,7 +8,7 @@ Feature: span
     """
     class PageWithSPAN < BasePageClass
       include WatirPageHelper
-      span :element
+      span :element, :id => 'span_identifier'
     end
     """
 
@@ -23,5 +23,5 @@ Feature: span
     Then I should be able to execute the following assertion:
     """
     page = PageWithSPAN.new true
-    page.element.should == 'span content'
+    page.element.should == 'span expected content'
     """
