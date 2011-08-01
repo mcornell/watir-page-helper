@@ -1,27 +1,27 @@
-Feature: h1 element location
+Feature: h5 element location
   As a web developer
-  I want to locate h1 elements
+  I want to locate h5 elements
   So that I can write tests that make assertions about their content
 
   Background:
     When I define a page class as:
     """
-    class PageWithH1 < BasePageClass
+    class PageWithH5 < BasePageClass
       include WatirPageHelper
-      h1 :element
+      h5 :element
     end
     """
 
-  Scenario: h1 element is located
+  Scenario: h5 element is located
     Then I should be able to locate the element with the following code:
     """
-    page = PageWithH1.new true
-    page.element_h1.exists?.should be_true
+    page = PageWithH5.new true
+    page.element_h5.exists?.should be_true
     """
 
-  Scenario: h1 text is extracted
+  Scenario: h5 text is extracted
     Then I should be able to execute the following assertion:
     """
-    page = PageWithH1.new true
-    page.element.should == 'h1 content'
+    page = PageWithH5.new true
+    page.element.should == 'h5 content'
     """

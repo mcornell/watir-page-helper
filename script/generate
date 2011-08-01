@@ -2,6 +2,36 @@
 
 require 'erb'
 
+feature_template = ERB.new <<EOF, 0, "%<>"
+Feature: <%= element %> element location
+  As a web developer
+  I want to locate <%= element %> elements
+  So that I can write tests that make assertions about their content
+
+  Background:
+    When I define a page class as:
+    """
+    class PageWith<%= element.upcase %> < BasePageClass
+      include WatirPageHelper
+      <%= element %> :element
+    end
+    """
+
+  Scenario: <%= element %> element is located
+    Then I should be able to locate the element with the following code:
+    """
+    page = PageWith<%= element.upcase %>.new true
+    page.element_<%= element %>.exists?.should be_true
+    """
+
+  Scenario: <%= element %> text is extracted
+    Then I should be able to execute the following assertion:
+    """
+    page = PageWith<%= element.upcase %>.new true
+    page.element.should == '<%= element %> content'
+    """
+EOF
+
 html_template = ERB.new <<EOF, 0, "%<>" 
 <html>
 <head>
@@ -18,4 +48,10 @@ elements = (1..6).map{|i| "h#{i}"}
 
 File.open 'features/support/test.html', 'w' do |f|
   f.puts html_template.result(binding)
+end
+
+elements.each do |element|
+  File.open "features/#{element}.feature", 'w' do |f|
+    f.puts feature_template.result(binding)
+  end
 end
