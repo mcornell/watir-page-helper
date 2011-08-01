@@ -8,4 +8,5 @@ group :development do
   gem "rcov"
   gem "yard"
   gem "bluecloth"
+  gem 'cucumber'
 end
