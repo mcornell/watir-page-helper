@@ -102,6 +102,13 @@ class PageNestedDiv < BasePageClass
   span(:my_unnamed_span) { |page| page.my_nice_div_div.span }
 end
 
+class PageNestedNoParams < BasePageClass
+  direct_url TEST_URL
+  div :my_nice_div, :id => 'myNiceDiv'
+  div(:my_unnamed_div) { my_nice_div_div.div }
+  span(:my_unnamed_span) { my_nice_div_div.span }
+end
+
 class PageSpan < BasePageClass
   direct_url TEST_URL
   span :background, :id => "mySpan"

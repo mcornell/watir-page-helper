@@ -443,132 +443,25 @@ module WatirPageHelper
       create_element_getter "#{name}_li", identifier, __method__, block
     end
 
-    # Generates two h1 methods to:
-    # * return the text from a h1;
-    # * return the h1 element.
-    #
-    # @param [Symbol] name The name of the h1 element (used to generate the methods)
-    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
-    # @param block
-    # @return [Nil]
-    #
-    # @example Specify a h1 to generate methods
-    #  h1 :heading_one, :id => "myH1"
-    #  page.heading_one.should == "My Heading One"
-    #  page.heading_one_h1.exist?.should be_true
-    def h1 name, identifier=nil, &block
-      define_method(name) do
-        self.send("#{name}_h1").text
+    (1..6).map{|i| "h#{i}"}.each do |type|
+      define_method type do |name, identifier=nil, &block|
+        create_element_getter "#{name}_#{type}", identifier, type, block
+        create_element_text_getter name, type
       end
-      create_element_getter "#{name}_h1", identifier, __method__, block
-    end
-
-    # Generates two h2 methods to:
-    # * return the text from a h2;
-    # * return the h2 element.
-    #
-    # @param [Symbol] name The name of the h2 element (used to generate the methods)
-    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
-    # @param block
-    # @return [Nil]
-    #
-    # @example Specify a h1 to generate methods
-    #  h2 :heading_two, :id => "myH2"
-    #  page.heading_two.should == "My Heading Two"
-    #  page.heading_two_h2.exist?.should be_true
-    def h2 name, identifier=nil, &block
-      define_method(name) do
-        self.send("#{name}_h2").text
-      end
-      create_element_getter "#{name}_h2", identifier, __method__, block
-    end
-
-    # Generates two h3 methods to:
-    # * return the text from a h3;
-    # * return the h3 element.
-    #
-    # @param [Symbol] name The name of the h3 element (used to generate the methods)
-    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
-    # @param block
-    # @return [Nil]
-    #
-    # @example Specify a h3 to generate methods
-    #  h2 :heading_three, :id => "myH3"
-    #  page.heading_three.should == "My Heading Three"
-    #  page.heading_three_h3.exist?.should be_true
-    def h3 name, identifier=nil, &block
-      define_method(name) do
-        self.send("#{name}_h3").text
-      end
-      create_element_getter "#{name}_h3", identifier, __method__, block
-    end
-
-    # Generates two h4 methods to:
-    # * return the text from a h4;
-    # * return the h4 element.
-    #
-    # @param [Symbol] name The name of the h4 element (used to generate the methods)
-    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
-    # @param block
-    # @return [Nil]
-    #
-    # @example Specify a h4 to generate methods
-    #  h4 :heading_four, :id => "myH4"
-    #  page.heading_four.should == "My Heading Four"
-    #  page.heading_four_h4.exist?.should be_true
-    def h4 name, identifier=nil, &block
-      define_method(name) do
-        self.send("#{name}_h4").text
-      end
-      create_element_getter "#{name}_h4", identifier, __method__, block
-    end
-
-    # Generates two h5 methods to:
-    # * return the text from a h5;
-    # * return the h5 element.
-    #
-    # @param [Symbol] name The name of the h5 element (used to generate the methods)
-    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
-    # @param block
-    # @return [Nil]
-    #
-    # @example Specify a h5 to generate methods
-    #  h2 :heading_five, :id => "myH5"
-    #  page.heading_five.should == "My Heading Five"
-    #  page.heading_five_h5.exist?.should be_true
-    def h5 name, identifier=nil, &block
-      define_method(name) do
-        self.send("#{name}_h5").text
-      end
-      create_element_getter "#{name}_h5", identifier, __method__, block
-    end
-
-    # Generates two h6 methods to:
-    # * return the text from a h6;
-    # * return the h6 element.
-    #
-    # @param [Symbol] name The name of the h6 element (used to generate the methods)
-    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
-    # @param block
-    # @return [Nil]
-    #
-    # @example Specify a h6 to generate methods
-    #  h2 :heading_six, :id => "myH6"
-    #  page.heading_six.should == "My Heading Six"
-    #  page.heading_six_h6.exist?.should be_true
-    def h6 name, identifier=nil, &block
-      define_method(name) do
-         self.send("#{name}_h6").text
-      end
-      create_element_getter "#{name}_h6", identifier, __method__, block
     end
 
     private
 
+    def create_element_text_getter name, type
+      define_method(name) do
+        self.send("#{name}_#{type}").text
+      end
+    end
+
     def create_element_getter name, identifier, type, block
       define_method name do
         if block
-           block.arity == 1 ? block.call(self) : block.call
+           block.arity == 1 ? block.call(self) : self.instance_eval(&block)
         else
           identifier.nil? ? @browser.send(type) : @browser.send(type, identifier)
         end
