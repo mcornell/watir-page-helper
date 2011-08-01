@@ -1,6 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    archive-tar-minitar (0.5.2)
     bluecloth (2.1.0)
     bluecloth (2.1.0-x86-mingw32)
     builder (3.0.0)
@@ -24,10 +25,17 @@ GEM
       bundler (~> 1.0.0)
       git (>= 1.2.5)
       rake
-    json (1.5.3)
+    json (1.4.6)
     json_pure (1.5.3)
+    mime-types (1.16)
     rake (0.9.2)
     rcov (0.9.9)
+    relish (0.4.0)
+      archive-tar-minitar (~> 0.5.2)
+      json (~> 1.4.6)
+      rest-client (~> 1.6.1)
+    rest-client (1.6.3)
+      mime-types (>= 1.16)
     rspec (2.6.0)
       rspec-core (~> 2.6.0)
       rspec-expectations (~> 2.6.0)
@@ -45,7 +53,7 @@ GEM
     term-ansicolor (1.0.6)
     watir-webdriver (0.2.8)
       selenium-webdriver (>= 0.2.2)
-    yard (0.6.8)
+    yard (0.7.2)
 
 PLATFORMS
   ruby
@@ -57,6 +65,7 @@ DEPENDENCIES
   cucumber
   jeweler (~> 1.5.2)
   rcov
+  relish
   rspec
   watir-webdriver (>= 0.2.0)
   yard
