@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+require 'erb'
+
+html_template = ERB.new <<EOF, 0, "%<>" 
+<html>
+<head>
+</head>
+<body>
+% elements.each do |element|
+  <<%= element %>><%= element %> content</<%= element %>>
+% end
+</body>
+</html>
+EOF
+
+elements = (1..6).map{|i| "h#{i}"}
+
+File.open 'features/support/test.html', 'w' do |f|
+  f.puts html_template.result(binding)
+end
