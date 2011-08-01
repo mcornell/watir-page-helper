@@ -9,4 +9,5 @@ group :development do
   gem "yard"
   gem "bluecloth"
   gem 'cucumber'
+  gem 'relish'
 end
