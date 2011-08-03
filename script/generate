@@ -2,35 +2,15 @@
 
 require 'erb'
 
-feature_template = ERB.new <<EOF, 0, "%<>"
-Feature: <%= element %>
-  As a web developer
-  I want to locate <%= element %> elements
-  So that I can write tests that make assertions about their content
+def path_to_template name
+  File.join Dir.pwd, "script/templates/#{name}.erb"
+end
 
-  Background:
-    When I define a page class as:
-    """
-    class PageWith<%= element.upcase %> < BasePageClass
-      include WatirPageHelper
-      <%= element %> :element, :id => '<%= element %>_identifier'
-    end
-    """
-
-  Scenario: <%= element %> element is located
-    Then I should be able to locate the element with the following code:
-    """
-    page = PageWith<%= element.upcase %>.new true
-    page.element_<%= element %>.exists?.should be_true
-    """
-
-  Scenario: <%= element %> text is extracted
-    Then I should be able to execute the following assertion:
-    """
-    page = PageWith<%= element.upcase %>.new true
-    page.element.should == '<%= element %> expected content'
-    """
-EOF
+def with_template name
+  template_content = File.read path_to_template(name)
+  template = ERB.new template_content, 0, "%<>"
+  yield template
+end
 
 html_template = ERB.new <<EOF, 0, "%<>" 
 <html>
@@ -56,8 +36,10 @@ File.open 'features/support/test.html', 'w' do |f|
   f.puts html_template.result(binding)
 end
 
-simple_elements.each do |element|
-  File.open "features/simple_elements/#{element}.feature", 'w' do |f|
-    f.puts feature_template.result(binding)
+with_template 'feature' do |feature_template|
+  simple_elements.each do |element|
+    File.open "features/simple_elements/#{element}.feature", 'w' do |f|
+      f.puts feature_template.result(binding)
+    end
   end
 end
