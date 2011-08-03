@@ -264,14 +264,6 @@ module WatirPageHelper
       end
     end
 
-    # Simple Elements
-    ['dl', 'dd', 'dt', 'form', 'li'].each do |type|
-      define_method type do |name, identifier=nil, &block|
-        create_element_getter "#{name}_#{type}", identifier, type, block
-        create_element_text_getter name, type
-      end
-    end
-
     private
 
     def create_element_clicker name, type
@@ -279,7 +271,6 @@ module WatirPageHelper
         self.send("#{name}_#{type}").click
       end
     end
-
 
     def create_element_text_getter name, type
       define_method(name) do
