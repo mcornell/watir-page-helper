@@ -1,3 +1,5 @@
+require 'watir-page-helper/generated.rb'
+
 # A helper mixin to make accessing web elements via Watir-WebDriver easier.
 ## This module assumes there is a @browser variable available.
 module WatirPageHelper
@@ -263,7 +265,7 @@ module WatirPageHelper
     end
 
     # Simple Elements
-    ['div', 'span', 'p', 'dl', 'dd', 'dt', 'form', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].each do |type|
+    ['dl', 'dd', 'dt', 'form', 'li'].each do |type|
       define_method type do |name, identifier=nil, &block|
         create_element_getter "#{name}_#{type}", identifier, type, block
         create_element_text_getter name, type
