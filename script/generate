@@ -23,7 +23,7 @@ with_template 'test.html' do |template|
   end
 end
 
-with_template 'feature' do |template|
+with_template 'simple_element.feature' do |template|
   simple_elements.each do |element|
     File.open "features/simple_elements/#{element}.feature", 'w' do |f|
       f.puts template.result(binding)
