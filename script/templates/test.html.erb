@@ -1,0 +1,10 @@
+<html>
+<head>
+</head>
+<body>
+% simple_elements.each do |element|
+  <<%= element %>><%= element %> unexpected content</<%= element %>>
+  <<%= element %> id="<%= element %>_identifier"><%= element %> expected content</<%= element %>>
+% end
+</body>
+</html>

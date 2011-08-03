@@ -12,28 +12,14 @@ def with_template name
   yield template
 end
 
-html_template = ERB.new <<EOF, 0, "%<>" 
-<html>
-<head>
-</head>
-<body>
-% simple_elements.each do |element|
-  <<%= element %>><%= element %> unexpected content</<%= element %>>
-  <<%= element %> id="<%= element %>_identifier"><%= element %> expected content</<%= element %>>
-% end
-</body>
-</html>
-EOF
-
 simple_elements = []
 simple_elements += (1..6).map{|i| "h#{i}"}
-simple_elements += %w{div}
-simple_elements += %w{span}
-simple_elements += %w{p}
-# simple_elements += %w{i strong}
+simple_elements += %w{div span p}
 
-File.open 'features/support/test.html', 'w' do |f|
-  f.puts html_template.result(binding)
+with_template 'test.html' do |html_template|
+  File.open 'features/support/test.html', 'w' do |f|
+    f.puts html_template.result(binding)
+  end
 end
 
 with_template 'feature' do |feature_template|
