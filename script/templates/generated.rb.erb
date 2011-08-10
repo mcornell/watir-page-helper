@@ -1,0 +1,13 @@
+module WatirPageHelper
+  module ClassMethods
+% texty_elements.each do |element|
+
+    def <%= element %> name, identifier=nil, &block
+      define_method(name) do
+        self.send("#{name}_<%= element %>").text
+      end
+      create_element_getter "#{name}_<%= element %>", identifier, __method__, block
+    end
+% end
+  end
+end

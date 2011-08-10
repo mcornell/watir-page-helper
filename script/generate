@@ -2,48 +2,15 @@
 
 require 'erb'
 
-feature_template = ERB.new <<EOF, 0, "%<>"
-Feature: <%= element %>
-  As a web developer
-  I want to locate <%= element %> elements
-  So that I can write tests that make assertions about their content
+def path_to_template name
+  File.join Dir.pwd, "script/templates/#{name}.erb"
+end
 
-  Background:
-    When I define a page class as:
-    """
-    class PageWith<%= element.upcase %> < BasePageClass
-      include WatirPageHelper
-      <%= element %> :element, :id => '<%= element %>_identifier'
-    end
-    """
-
-  Scenario: <%= element %> element is located
-    Then I should be able to locate the element with the following code:
-    """
-    page = PageWith<%= element.upcase %>.new true
-    page.element_<%= element %>.exists?.should be_true
-    """
-
-  Scenario: <%= element %> text is extracted
-    Then I should be able to execute the following assertion:
-    """
-    page = PageWith<%= element.upcase %>.new true
-    page.element.should == '<%= element %> expected content'
-    """
-EOF
-
-html_template = ERB.new <<EOF, 0, "%<>" 
-<html>
-<head>
-</head>
-<body>
-% simple_elements.each do |element|
-  <<%= element %>><%= element %> unexpected content</<%= element %>>
-  <<%= element %> id="<%= element %>_identifier"><%= element %> expected content</<%= element %>>
-% end
-</body>
-</html>
-EOF
+def with_template name
+  template_content = File.read path_to_template(name)
+  template = ERB.new template_content, 0, "%<>"
+  yield template
+end
 
 simple_element_method_template - ERB.new <<EOF, 0, "%<>>"
 def <%= element %> name, identifier=nil, &block
@@ -56,17 +23,25 @@ EOF
 
 simple_elements = []
 simple_elements += (1..6).map{|i| "h#{i}"}
-simple_elements += %w{div}
-simple_elements += %w{span}
-simple_elements += %w{p}
-# simple_elements += %w{i strong}
+simple_elements += %w{div span p}
+texty_elements = simple_elements + %w{dl dd dt form li}
 
-File.open 'features/support/test.html', 'w' do |f|
-  f.puts html_template.result(binding)
+with_template 'test.html' do |template|
+  File.open 'features/support/test.html', 'w' do |f|
+    f.puts template.result(binding)
+  end
 end
 
-simple_elements.each do |element|
-  File.open "features/simple_elements/#{element}.feature", 'w' do |f|
-    f.puts feature_template.result(binding)
+with_template 'simple_element.feature' do |template|
+  simple_elements.each do |element|
+    File.open "features/simple_elements/#{element}.feature", 'w' do |f|
+      f.puts template.result(binding)
+    end
+  end
+end
+
+with_template 'generated.rb' do |template|
+  File.open 'lib/watir-page-helper/generated.rb', 'w' do |f|
+    f.puts template.result(binding)
   end
 end
