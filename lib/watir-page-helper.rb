@@ -59,31 +59,6 @@ module WatirPageHelper
       end
     end
 
-    # Generates three text_field methods to:
-    # * set a text field;
-    # * get a text field's value; and
-    # * return the text_field element.
-    #
-    # @param [Symbol] name The name of the text field element (used to generate the methods)
-    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
-    # @param block
-    # @return [Nil]
-    #
-    # @example Specify a text field to generate methods
-    #   text_field first_name, :name => "firstname"
-    #   page.first_name = "Finley" #set
-    #   page.first_name.should == "Finley" #check
-    #   page.first_name_text_field.exists?.should be_true #object
-    #def text_field name, identifier=nil, &block
-    #  define_method(name) do
-    #    self.send("#{name}_text_field").value
-    #  end
-    #  define_method("#{name}=") do |value|
-    #    self.send("#{name}_text_field").set value
-    #  end
-    #  create_element_getter "#{name}_text_field", identifier, __method__, block
-    #end
-
     # Generates four select_list methods to:
     # * get the value specified in a select_list
     # * select a value in a select list;
@@ -160,7 +135,6 @@ module WatirPageHelper
     #   page.select_medium
     #   page.medium_set?.should be_true
     #   page.medium_radio.exist?.should be_true
-
     def radio name, identifier=nil, &block
       define_method("select_#{name}") do
         self.send("#{name}_radio").set
@@ -176,8 +150,6 @@ module WatirPageHelper
       warn 'radio_button is a deprecated method in the watir-page-helper gem, and will be removed in future versions.'
       radio name, identifier, &block
     end
-
-
 
     # Generates a table method to return a table element.
     # @param [Symbol] name The name of the table element (used to generate the method)
@@ -246,49 +218,7 @@ module WatirPageHelper
       create_element_getter "#{name}", identifier, __method__, block
     end
 
-    #Setty Elements
-    [:text_field].each do |type|
-      define_method type do |name, identifier=nil, &block|
-        create_element_getter "#{name}_#{type}", identifier, type, block
-        create_element_value_getter name, type
-        create_element_value_setter "#{name}=", name, type
-      end
-    end
-
-
-    #Clicky Elements
-    ['link', 'button'].each do |type|
-      define_method type do |name, identifier=nil, &block|
-        create_element_getter "#{name}_#{type}", identifier, type, block
-        create_element_clicker name, type
-      end
-    end
-
     private
-
-    def create_element_clicker name, type
-      define_method(name) do
-        self.send("#{name}_#{type}").click
-      end
-    end
-
-    def create_element_text_getter name, type
-      define_method(name) do
-        self.send("#{name}_#{type}").text
-      end
-    end
-
-    def create_element_value_getter name, type
-      define_method(name) do
-        self.send("#{name}_#{type}").value
-      end
-    end
-
-    def create_element_value_setter method_name, name, type
-      define_method(method_name) do |value|
-        self.send("#{name}_#{type}").set value
-      end
-    end
 
     def create_element_getter name, identifier, type, block
       define_method name do
