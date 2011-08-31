@@ -1,7 +1,6 @@
 module WatirPageHelper
   module ClassMethods
 
-
     # Generates two h1 methods to:
     # * return the text from a h1;
     # * return the h1 element.
@@ -282,7 +281,6 @@ module WatirPageHelper
       create_element_getter "#{name}_li", identifier, __method__, block
     end
 
-
     # Generates two link methods to:
     # * click a link;
     # * return the link element.
@@ -323,7 +321,6 @@ module WatirPageHelper
       create_element_getter "#{name}_button", identifier, __method__, block
     end
 
-
     # Generates three text_field methods to:
     # * set a text_field;
     # * get a text_field's value; and
@@ -347,6 +344,32 @@ module WatirPageHelper
         self.send("#{name}_text_field").set value
       end
       create_element_getter "#{name}_text_field", identifier, __method__, block
+    end
+
+    # Generates a table method to return a table element.
+    # @param [Symbol] name The name of the table element (used to generate the method)
+    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
+    # @param block
+    # @return [Nil]
+    #
+    # @example Specify a table to generate a method
+    #   table :my_element, :id => 'my_element'
+    #   page.my_element.exists?.should be_true
+    def table name, identifier=nil, &block
+      create_element_getter "#{name}", identifier, __method__, block
+    end
+
+    # Generates a image method to return a image element.
+    # @param [Symbol] name The name of the image element (used to generate the method)
+    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
+    # @param block
+    # @return [Nil]
+    #
+    # @example Specify a image to generate a method
+    #   table :my_element, :id => 'my_element'
+    #   page.my_element.exists?.should be_true
+    def image name, identifier=nil, &block
+      create_element_getter "#{name}", identifier, __method__, block
     end
   end
 end

@@ -151,19 +151,6 @@ module WatirPageHelper
       radio name, identifier, &block
     end
 
-    # Generates a table method to return a table element.
-    # @param [Symbol] name The name of the table element (used to generate the method)
-    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
-    # @param block
-    # @return [Nil]
-    #
-    # @example Specify a table to generate a method
-    #   table :test_table, :id => "myTable"
-    #   page.test_table.rows.length.should == 1
-    def table name, identifier=nil, &block
-      create_element_getter "#{name}", identifier, __method__, block
-    end
-
     # Generates two row methods to:
     # * return the text from a table row;
     # * return the row element.
@@ -202,20 +189,6 @@ module WatirPageHelper
         self.send("#{name}_cell").text
       end
       create_element_getter "#{name}_cell", identifier, 'td', block
-    end
-
-    # Generates a method to return an image element
-    #
-    # @param [Symbol] name The name of the image element (used to generate the methods)
-    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
-    # @param block
-    # @return [Nil]
-    #
-    # @example Specify a image to generate method
-    #  image :succulent, :id => "mySucculentImage"
-    #  page.succulent.exist?.should be_true
-    def image name, identifier=nil, &block
-      create_element_getter "#{name}", identifier, __method__, block
     end
 
     private

@@ -1,6 +1,5 @@
 module WatirPageHelper
   module ClassMethods
-
 % texty_elements.each do |element|
 
     # Generates two <%= element %> methods to:
@@ -23,7 +22,6 @@ module WatirPageHelper
       create_element_getter "#{name}_<%= element %>", identifier, __method__, block
     end
 % end
-
 % clicky_elements.each do |element|
 
     # Generates two <%= element %> methods to:
@@ -46,7 +44,6 @@ module WatirPageHelper
       create_element_getter "#{name}_<%= element %>", identifier, __method__, block
     end
 % end
-
 % setty_elements.each do |element|
 
     # Generates three <%= element %> methods to:
@@ -72,6 +69,21 @@ module WatirPageHelper
         self.send("#{name}_<%= element %>").set value
       end
       create_element_getter "#{name}_<%= element %>", identifier, __method__, block
+    end
+% end
+% non_extended_elements.each do |element|
+
+    # Generates a <%= element %> method to return a <%= element %> element.
+    # @param [Symbol] name The name of the <%= element %> element (used to generate the method)
+    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
+    # @param block
+    # @return [Nil]
+    #
+    # @example Specify a <%= element %> to generate a method
+    #   table :my_element, :id => 'my_element'
+    #   page.my_element.exists?.should be_true
+    def <%= element %> name, identifier=nil, &block
+      create_element_getter "#{name}", identifier, __method__, block
     end
 % end
   end
