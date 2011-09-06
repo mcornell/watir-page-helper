@@ -98,7 +98,11 @@ end
 class PageNestedDiv < BasePageClass
   direct_url TEST_URL
   div :my_nice_div, :id => 'myNiceDiv'
-  div(:my_unnamed_div) { |page| page.my_nice_div_div.div }
+  div :my_unnamed_div, :parent => :my_nice_div_div
+  div(:my_unnamed_div) do |page|
+
+     page.my_nice_div_div.div
+    end
   span(:my_unnamed_span) { |page| page.my_nice_div_div.span }
 end
 
