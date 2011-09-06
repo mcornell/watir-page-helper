@@ -19,6 +19,13 @@ describe "Watir Page Helper" do
     page.my_unnamed_span.should == 'This span is unnamed and inside myNiceDiv.'
   end
 
+  it 'should support nesting without parameters' do
+    page = PageNestedNoParams.new @browser, true
+    page.my_nice_div.should == "This div is unnamed and inside myNiceDiv.\nThis span is unnamed and inside myNiceDiv."
+    page.my_unnamed_div.should == 'This div is unnamed and inside myNiceDiv.'
+    page.my_unnamed_span.should == 'This span is unnamed and inside myNiceDiv.'
+  end
+
   it "should raise an error when the expected literal title doesn't match actual title" do
     lambda { PageIncorrectTitle.new @browser, true }.should raise_error("Expected title 'not expected' instead of 'HTML Document Title'")
   end

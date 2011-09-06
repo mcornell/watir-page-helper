@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+
+require 'erb'
+
+def path_to_template name
+  File.join Dir.pwd, "script/templates/#{name}.erb"
+end
+
+def with_template name
+  template_content = File.read path_to_template(name)
+  template = ERB.new template_content, 0, "%<>"
+  yield template
+end
+
+simple_elements = %w{h1 h2 h3 h4 h5 h6 div span p}
+texty_elements = simple_elements + %w{dl dd dt form li}
+clicky_elements = %w{link button}
+setty_elements = %w{text_field}
+non_extended_elements = %w{table image}
+
+with_template 'test.html' do |template|
+  File.open 'features/support/test.html', 'w' do |f|
+    f.puts template.result(binding)
+  end
+end
+
+with_template 'simple_element.feature' do |template|
+  simple_elements.each do |element|
+    File.open "features/simple_elements/#{element}.feature", 'w' do |f|
+      f.puts template.result(binding)
+    end
+  end
+end
+
+with_template 'generated.rb' do |template|
+  File.open 'lib/watir-page-helper/generated.rb', 'w' do |f|
+    f.puts template.result(binding)
+  end
+end

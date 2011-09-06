@@ -1,0 +1,90 @@
+module WatirPageHelper
+  module ClassMethods
+% texty_elements.each do |element|
+
+    # Generates two <%= element %> methods to:
+    # * return the text from a <%= element %>;
+    # * return the <%= element %> element.
+    #
+    # @param [Symbol] name The name of the <%= element %> element (used to generate the methods)
+    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
+    # @param block
+    # @return [Nil]
+    #
+    # @example Specify a <%= element %> to generate methods
+    # <%= element %> :my_element, :id => "my_element"
+    # page.my_element.should == "My Element Text"
+    # page.my_element_<%= element %>.exist?.should be_true
+    def <%= element %> name, identifier=nil, &block
+      define_method(name) do
+        self.send("#{name}_<%= element %>").text
+      end
+      create_element_getter "#{name}_<%= element %>", identifier, __method__, block
+    end
+% end
+% clicky_elements.each do |element|
+
+    # Generates two <%= element %> methods to:
+    # * click a <%= element %>;
+    # * return the <%= element %> element.
+    #
+    # @param [Symbol] name The name of the <%= element %> element (used to generate the methods)
+    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
+    # @param block
+    # @return [Nil]
+    #
+    # @example Specify a <%= element %> to generate methods
+    # <%= element %> :info, :text => "Information"
+    # page.info
+    # page.info_<%= element %>.exist?.should be_true
+    def <%= element %> name, identifier=nil, &block
+      define_method(name) do
+        self.send("#{name}_<%= element %>").click
+      end
+      create_element_getter "#{name}_<%= element %>", identifier, __method__, block
+    end
+% end
+% setty_elements.each do |element|
+
+    # Generates three <%= element %> methods to:
+    # * set a <%= element %>;
+    # * get a <%= element %>'s value; and
+    # * return the <%= element %> element.
+    #
+    # @param [Symbol] name The name of the <%= element %> element (used to generate the methods)
+    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
+    # @param block
+    # @return [Nil]
+    #
+    # @example Specify a <%= element %> to generate methods
+    # <%= element %> first_name, :name => "firstname"
+    # page.first_name = "Finley" #set
+    # page.first_name.should == "Finley" #check
+    # page.first_name_<%= element %>.exists?.should be_true #object
+    def <%= element %> name, identifier=nil, &block
+      define_method(name) do
+        self.send("#{name}_<%= element %>").value
+      end
+      define_method("#{name}=") do |value|
+        self.send("#{name}_<%= element %>").set value
+      end
+      create_element_getter "#{name}_<%= element %>", identifier, __method__, block
+    end
+% end
+% non_extended_elements.each do |element|
+
+    # Generates a <%= element %> method to return a <%= element %> element.
+    # @param [Symbol] name The name of the <%= element %> element (used to generate the method)
+    # @param [optional, Hash] identifier A set of key, value pairs to identify the element
+    # @param block
+    # @return [Nil]
+    #
+    # @example Specify a <%= element %> to generate a method
+    #   table :my_element, :id => 'my_element'
+    #   page.my_element.exists?.should be_true
+    def <%= element %> name, identifier=nil, &block
+      create_element_getter "#{name}", identifier, __method__, block
+    end
+% end
+  end
+end
