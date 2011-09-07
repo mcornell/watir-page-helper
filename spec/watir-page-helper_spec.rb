@@ -190,11 +190,4 @@ describe "Watir Page Helper" do
     page.heading_six_h6.exist?.should be_true
   end
 
-
-  it "should support finding items using a parent other than @browser" do
-    page = PageNesting.new @browser, true
-    page.outside_paragraph.should == "Outside"
-    page.nested_paragraph.should == "This is a paragraph."
-    page.nested_paragraph_2.should == "This is a paragraph."
-  end
 end
